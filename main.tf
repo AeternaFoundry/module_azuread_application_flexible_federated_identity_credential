@@ -7,5 +7,15 @@ resource "azuread_application_flexible_federated_identity_credential" "applicati
   display_name               = each.value.display_name
   issuer                     = each.value.issuer
   description                = each.value.description
+
+  dynamic "timeouts" {
+    for_each = each.value.timeouts != null ? [each.value.timeouts] : []
+    content {
+      create = timeouts.value.create
+      delete = timeouts.value.delete
+      read   = timeouts.value.read
+      update = timeouts.value.update
+    }
+  }
 }
 
